@@ -1,26 +1,50 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { PokemonBasic } from '../types/pokemon';
+import type { Pokemon, PokemonSummary } from '../types/pokemon';
 import { RootState } from '.';
+import { PokemonTypeColors } from '../theme/colors';
 
 type PokemonState = {
-  pokemons: PokemonBasic[];
+  pokemonList: PokemonSummary[];
+  isLoadingPokemonOfTheDay: boolean;
+  pokemonOfTheDay: Pokemon | undefined;
+  today: number;
 };
 
 const initialState: PokemonState = {
-  pokemons: [],
+  pokemonList: [],
+  isLoadingPokemonOfTheDay: false,
+  pokemonOfTheDay: undefined,
+  today: new Date().setHours(0, 0, 0, 0),
 };
 
 const pokemonSlice = createSlice({
   name: 'pokemon',
   initialState,
   reducers: {
-    setPokemon: (state, action: PayloadAction<PokemonBasic[]>) => {
-      state.pokemons = action.payload;
+    setPokemonList: (state, action: PayloadAction<PokemonSummary[]>) => {
+      state.pokemonList = action.payload;
+    },
+    setPokemonOfTheDay: (state, action: PayloadAction<Pokemon>) => {
+      state.pokemonOfTheDay = action.payload;
+    },
+    setIsLoadingPokemonOfTheDay: (state, action: PayloadAction<boolean>) => {
+      state.isLoadingPokemonOfTheDay = action.payload;
     },
   },
 });
 
-export const { setPokemon } = pokemonSlice.actions;
-export const selectPokemon = (state: RootState) => state.pokemon.pokemons;
+export const selectPokemonOfTheDay = (state: RootState) => ({
+  pokemonOfTheDay: state.pokemon.pokemonOfTheDay,
+  isLoadingPokemonOfTheDay: state.pokemon.isLoadingPokemonOfTheDay,
+});
+export const selectColorOfTheDay = (state: RootState) =>
+  state.pokemon.pokemonOfTheDay
+    ? PokemonTypeColors[state.pokemon.pokemonOfTheDay.types[0]?.type.name]
+    : PokemonTypeColors.pokemonRed;
+export const {
+  setPokemonList,
+  setPokemonOfTheDay,
+  setIsLoadingPokemonOfTheDay,
+} = pokemonSlice.actions;
 export default pokemonSlice.reducer;
