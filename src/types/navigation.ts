@@ -1,12 +1,8 @@
 export type RootStackParamList = {
   Discover: undefined;
   Types: undefined;
-  TypeDetail: {
-    type: string;
-  };
-  Pokemon: {
-    id: number;
-  };
+  TypeDetail: undefined;
+  Pokemon: undefined;
   Locations: undefined;
   LocationDetail: {
     location: string;
@@ -18,5 +14,6 @@ export type RootStackParamList = {
 };
 
 export type RootBottomTabsParamList = {
-  PokemonDetail: {};
+  PokemonDetail: undefined;
+  EvolutionDetail: undefined;
 };

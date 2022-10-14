@@ -1,16 +1,25 @@
+import { PokemonTypes } from '../types/pokemonTypes';
+
 type Color = {
   [key: string]: string;
+  white: string;
+  gray: string;
+  slateGray: string;
+  darkGray: string;
+  black: string;
+  lightGray: string;
 };
 
 export const Colors: Color = {
   white: '#fff',
   gray: '#a9a9a9',
-  whiteSmoke: '#f5f5f5',
   black: '#000',
+  slateGray: '#32353d',
+  darkGray: '#131417',
   lightGray: '#f2f2f2',
 };
 
-export const PokemonTypeColors: Color = {
+export const PokemonTypeColors: PokemonTypes = {
   pokemonRed: '#ff5656',
   pokemonRedLighter: '#ff6767',
   pokemonRedDarker: '#cc4444',

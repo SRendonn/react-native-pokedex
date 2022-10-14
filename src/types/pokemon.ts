@@ -78,6 +78,10 @@ export type ResourceSummary = {
   url: string;
 };
 
+export type ResourceMap<T> = {
+  [key: string]: T;
+};
+
 export type SpeciesSummary = ResourceSummary;
 export type FormSummary = ResourceSummary;
 export type ItemSummary = ResourceSummary;

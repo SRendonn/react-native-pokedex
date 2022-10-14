@@ -3,12 +3,19 @@ import { View, Image, StyleSheet, Text } from 'react-native';
 import { Colors } from '../../theme/colors';
 import type { Pokemon } from '../../types/pokemon';
 import PokemonTypeChip from './PokemonTypeChip';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../types/navigation';
+import { useAppDispatch } from '../../hooks/redux';
+import { setCurrentTypeName } from '../../store/TypesSlice';
 
 type PokemonOfTheDayProps = {
   pokemon: Pokemon;
 };
 
 const PokemonOfTheDay = ({ pokemon }: PokemonOfTheDayProps) => {
+  const dispatch = useAppDispatch();
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const pokemonUri =
     pokemon.sprites.other.home.front_default || pokemon.sprites.front_default;
 

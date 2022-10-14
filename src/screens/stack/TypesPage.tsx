@@ -1,20 +1,27 @@
 import React, { useEffect } from 'react';
-import { StyleSheet, StatusBar, FlatList, View, Text } from 'react-native';
-import SearchBar from '../components/SearchBar';
-import { useAppDispatch, useAppSelector } from '../hooks/redux';
-import TypesService from '../services/TypesServices';
+import { StyleSheet, StatusBar, View, Text } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/native';
+import SearchBar from '../../components/SearchBar';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import TypesService from '../../services/TypesServices';
 import {
   selectIsLoadingTypes,
   selectSearch,
   selectTypesList,
+  setCurrentTypeName,
+  setPaginationOptions,
   setSearch,
-} from '../store/TypesSlice';
-import { PokemonTypeColors } from '../theme/colors';
-import PokemonTypeCard from '../components/pokemon/PokemonTypeCard';
+} from '../../store/TypesSlice';
+import { PokemonTypeColors, Colors } from '../../theme/colors';
+import PokemonTypeCard from '../../components/pokemon/PokemonTypeCard';
+import { RootStackParamList } from '../../types/navigation';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 const typesServices = new TypesService();
 
 const TypesPage = () => {
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const dispatch = useAppDispatch();
   const search = useAppSelector(selectSearch);
   const typesList = useAppSelector(selectTypesList);
@@ -28,6 +35,7 @@ const TypesPage = () => {
     <View style={styles.main}>
       <StatusBar backgroundColor={PokemonTypeColors.pokemonRed} />
       <SearchBar
+        backgroundColor={PokemonTypeColors.pokemonRed}
         value={search}
         onChangeText={(text: string) => {
           dispatch(setSearch(text));
@@ -44,7 +52,16 @@ const TypesPage = () => {
           numColumns={2}
           data={typesList}
           keyExtractor={(item) => item.name}
-          renderItem={({ item }) => <PokemonTypeCard type={item.name} />}
+          renderItem={({ item }) => (
+            <PokemonTypeCard
+              type={item.name}
+              onPress={() => {
+                dispatch(setPaginationOptions({ offset: 0 }));
+                dispatch(setCurrentTypeName(item.name));
+                navigation.navigate('TypeDetail');
+              }}
+            />
+          )}
         />
       )}
     </View>
@@ -56,6 +73,7 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   main: {
+    backgroundColor: Colors.darkGray,
     display: 'flex',
     width: '100%',
     height: '100%',
