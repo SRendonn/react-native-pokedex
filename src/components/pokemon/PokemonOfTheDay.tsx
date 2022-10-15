@@ -1,30 +1,28 @@
 import React from 'react';
-import { View, Image, StyleSheet, Text } from 'react-native';
-import { Colors } from '../../theme/colors';
+import { View, StyleSheet } from 'react-native';
+import { usePokemonImageFromObject } from '../../hooks/pokemon';
 import type { Pokemon } from '../../types/pokemon';
 import PokemonTypeChip from './PokemonTypeChip';
-import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../../types/navigation';
-import { useAppDispatch } from '../../hooks/redux';
-import { setCurrentTypeName } from '../../store/TypesSlice';
+import PokemonBasicInfo from './PokemonBasicInfo';
 
 type PokemonOfTheDayProps = {
   pokemon: Pokemon;
+  onPokemonPress?: Function;
 };
 
-const PokemonOfTheDay = ({ pokemon }: PokemonOfTheDayProps) => {
-  const dispatch = useAppDispatch();
-  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
-  const pokemonUri =
-    pokemon.sprites.other.home.front_default || pokemon.sprites.front_default;
+const PokemonOfTheDay = ({
+  pokemon,
+  onPokemonPress = () => {},
+}: PokemonOfTheDayProps) => {
+  const pokemonUri = usePokemonImageFromObject(pokemon) || '';
 
   return (
     <View style={styles.container}>
-      <Text style={styles.pokemonName}>{pokemon.name}</Text>
-      <View style={styles.pokemonImage}>
-        <Image source={{ uri: pokemonUri, width: 192, height: 192 }} />
-      </View>
+      <PokemonBasicInfo
+        pokemonName={pokemon.name}
+        pokemonUri={pokemonUri}
+        onPress={onPokemonPress}
+      />
       <View style={styles.typesChips}>
         {pokemon.types.map((type) => (
           <PokemonTypeChip key={type.type.name} type={type.type.name} />
@@ -41,22 +39,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginVertical: 16,
     marginHorizontal: 4,
-  },
-  pokemonName: {
-    marginBottom: 8,
-    color: Colors.white,
-    fontWeight: 'bold',
-    textTransform: 'uppercase',
-    fontSize: 26,
-  },
-  pokemonImage: {
-    display: 'flex',
-    alignItems: 'center',
-    width: 192,
-    height: 192,
-    borderRadius: 9999,
-    backgroundColor: 'rgba(100,100,100,0.2)',
-    overflow: 'visible',
   },
   bgPokeball: {
     position: 'absolute',

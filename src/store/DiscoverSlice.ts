@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import type { Pokemon } from '../types/pokemon';
 import { RootState } from '.';
-import { PokemonTypeColors } from '../theme/colors';
+import { Colors, PokemonTypeColors } from '../theme/colors';
 
 type DiscoverState = {
   isLoadingPokemonOfTheDay: boolean;
@@ -34,7 +34,7 @@ export const selectPokemonOfTheDay = (state: RootState) => ({
 export const selectColorOfTheDay = (state: RootState) =>
   state.discover.pokemonOfTheDay
     ? PokemonTypeColors[state.discover.pokemonOfTheDay.types[0]?.type.name]
-    : PokemonTypeColors.pokemonRed;
+    : Colors.pokemonRed;
 export const { setPokemonOfTheDay, setIsLoadingPokemonOfTheDay } =
   discoverSlice.actions;
 

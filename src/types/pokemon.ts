@@ -14,6 +14,7 @@ export type Pokemon = {
   past_types: PastTypeSummary[];
   species: SpeciesSummary[];
   sprites: SpriteSummary;
+  stats: StatSummary[];
   types: TypeSummary[];
   weight: number;
 };
@@ -52,7 +53,7 @@ export type SpriteSummary = Sprite & {
   other: {
     dream_world: Sprite;
     home: Sprite;
-    official_artwork: Sprite;
+    'official-artwork': Sprite;
   };
 };
 
@@ -79,7 +80,7 @@ export type ResourceSummary = {
 };
 
 export type ResourceMap<T> = {
-  [key: string]: T;
+  [key: string]: T | undefined;
 };
 
 export type SpeciesSummary = ResourceSummary;

@@ -2,6 +2,9 @@ import { PokemonTypes } from '../types/pokemonTypes';
 
 type Color = {
   [key: string]: string;
+  pokemonRed: string;
+  pokemonRedLighter: string;
+  pokemonRedDarker: string;
   white: string;
   gray: string;
   slateGray: string;
@@ -11,6 +14,9 @@ type Color = {
 };
 
 export const Colors: Color = {
+  pokemonRed: '#ff5656',
+  pokemonRedLighter: '#ff6767',
+  pokemonRedDarker: '#cc4444',
   white: '#fff',
   gray: '#a9a9a9',
   black: '#000',
@@ -20,13 +26,10 @@ export const Colors: Color = {
 };
 
 export const PokemonTypeColors: PokemonTypes = {
-  pokemonRed: '#ff5656',
-  pokemonRedLighter: '#ff6767',
-  pokemonRedDarker: '#cc4444',
   grass: '#8ddb8a',
   water: '#92b8f7',
   fire: '#ffad76',
-  electric: '#fed755',
+  electric: '#facd56',
   psychic: '#ff96b4',
   poison: '#d583c5',
   bug: '#c4d368',
@@ -43,4 +46,13 @@ export const PokemonTypeColors: PokemonTypes = {
   ice: '#aae6e6',
   unknown: '#68a090',
   shadow: '#3e3355',
+};
+
+export const PokemonStatsColor: { [key: string]: string } = {
+  hp: PokemonTypeColors.pokemonRed,
+  atk: PokemonTypeColors.fire,
+  def: PokemonTypeColors.electric,
+  satk: PokemonTypeColors.water,
+  sdef: PokemonTypeColors.grass,
+  spd: PokemonTypeColors.fairy,
 };

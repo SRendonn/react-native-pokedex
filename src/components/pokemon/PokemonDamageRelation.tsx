@@ -32,9 +32,10 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   damageRelationsWrapper: {
+    paddingHorizontal: 24,
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     alignItems: 'center',
   },
   damageRelations: {

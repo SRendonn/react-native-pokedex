@@ -1,20 +1,143 @@
-import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import React, { useEffect } from 'react';
+import { StyleSheet, View, Text, StatusBar, Image } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
+import PokemonTypeChip from '../../components/pokemon/PokemonTypeChip';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import PokemonService from '../../services/PokemonService';
+import {
+  selectCurrentPokemon,
+  selectCurrentPokemonName,
+  selectIsLoadingCurrentPokemon,
+  selectPokemonColor,
+} from '../../store/PokemonSlice';
+import { Colors } from '../../theme/colors';
+import PokemonStats from '../../components/pokemon/PokemonStats';
+import { usePokemonImageFromObject } from '../../hooks/pokemon';
+
+const pokemonService = new PokemonService();
 
 const PokemonDetailPage = () => {
+  const dispatch = useAppDispatch();
+  const isLoadingCurrentPokemon = useAppSelector(selectIsLoadingCurrentPokemon);
+  const currentPokemonName = useAppSelector(selectCurrentPokemonName);
+  const currentPokemon = useAppSelector(selectCurrentPokemon);
+  const pokemonColor = useAppSelector(selectPokemonColor);
+
+  const pokemonUri = usePokemonImageFromObject(currentPokemon);
+
+  useEffect(() => {
+    dispatch(pokemonService.fetchPokemonDetail(currentPokemonName));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPokemonName]);
+
   return (
     <View style={styles.main}>
-      <Text>Pokemon Detail here</Text>
+      <StatusBar backgroundColor={pokemonColor} />
+      <View
+        style={{
+          ...styles.bgTopPart,
+          backgroundColor: pokemonColor,
+        }}
+      />
+      <View style={styles.bgBottomPart} />
+      {isLoadingCurrentPokemon ? (
+        <Text>Loading</Text>
+      ) : currentPokemon ? (
+        <View style={styles.pokemonMain}>
+          <View style={styles.pokemonImage}>
+            <Image source={{ uri: pokemonUri, width: 192, height: 192 }} />
+          </View>
+          <View style={styles.typesChips}>
+            {currentPokemon.types.map((type) => (
+              <PokemonTypeChip key={type.type.name} type={type.type.name} />
+            ))}
+          </View>
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <View style={styles.pokemonDimensions}>
+              <View>
+                <Text style={styles.pokemonDimensionTitle}>Height</Text>
+                <Text style={styles.pokemonDimensionValue}>
+                  {`${currentPokemon.height / 10} m`}
+                </Text>
+              </View>
+              <View>
+                <Text style={styles.pokemonDimensionTitle}>Weight</Text>
+                <Text style={styles.pokemonDimensionValue}>
+                  {`${currentPokemon.weight / 10} kg`}
+                </Text>
+              </View>
+            </View>
+            <PokemonStats stats={currentPokemon.stats} />
+          </ScrollView>
+        </View>
+      ) : (
+        <></>
+      )}
     </View>
   );
 };
 
-export default PokemonDetailPage;
-
 const styles = StyleSheet.create({
   main: {
     display: 'flex',
+    position: 'relative',
     width: '100%',
     height: '100%',
   },
+  bgTopPart: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: '100%',
+  },
+  bgBottomPart: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: '75%',
+    borderTopLeftRadius: 200,
+    borderTopRightRadius: 200,
+    backgroundColor: Colors.darkGray,
+  },
+  pokemonMain: {
+    position: 'relative',
+    zIndex: 10,
+    top: 75,
+  },
+  pokemonImage: {
+    display: 'flex',
+    alignItems: 'center',
+    width: '100%',
+    height: 192,
+    overflow: 'visible',
+  },
+  typesChips: {
+    marginTop: 16,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  pokemonDimensions: {
+    paddingTop: 8,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+  },
+  pokemonDimensionTitle: {
+    paddingHorizontal: 4,
+    color: Colors.white,
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  pokemonDimensionValue: {
+    textAlign: 'center',
+    paddingHorizontal: 4,
+    color: Colors.white,
+    fontWeight: '600',
+  },
 });
+
+export default PokemonDetailPage;

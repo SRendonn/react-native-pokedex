@@ -32,8 +32,9 @@ export default class TypesService {
   fetchTypeByName(name: string) {
     return async (dispatch: AppDispatch, getState: () => RootState) => {
       try {
-        const state = getState();
+        if (!name) return;
 
+        const state = getState();
         if (!(name in state.types.typesDetailMap)) {
           const response = await api.get(`type/${name}`);
           const type: PokemonType = response.data;

@@ -21,6 +21,7 @@ import SearchBar from '../../components/SearchBar';
 import Pagination from '../../components/Pagination';
 import { Colors } from '../../theme/colors';
 import PokemonDamageRelation from '../../components/pokemon/PokemonDamageRelation';
+import { setCurrentPokemonName } from '../../store/PokemonSlice';
 
 const typesService = new TypesService();
 
@@ -81,6 +82,7 @@ const TypeDetailPage = () => {
                 pokemonBasic={item.pokemon}
                 typeColor={typeColor}
                 onPress={() => {
+                  dispatch(setCurrentPokemonName(item.pokemon.name));
                   navigation.navigate('Pokemon');
                 }}
               />

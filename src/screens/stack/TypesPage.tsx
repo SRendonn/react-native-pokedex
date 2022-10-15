@@ -33,9 +33,9 @@ const TypesPage = () => {
 
   return (
     <View style={styles.main}>
-      <StatusBar backgroundColor={PokemonTypeColors.pokemonRed} />
+      <StatusBar backgroundColor={Colors.pokemonRed} />
       <SearchBar
-        backgroundColor={PokemonTypeColors.pokemonRed}
+        backgroundColor={Colors.pokemonRed}
         value={search}
         onChangeText={(text: string) => {
           dispatch(setSearch(text));

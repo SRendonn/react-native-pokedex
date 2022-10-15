@@ -7,7 +7,7 @@ import {
   TypesPage,
 } from '../screens/stack';
 import { PokemonDetailPage, EvolutionDetailPage } from '../screens/bottom';
-import { Colors, PokemonTypeColors } from '../theme/colors';
+import { Colors } from '../theme/colors';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { NavigationContainer } from '@react-navigation/native';
 import type {
@@ -19,6 +19,11 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useAppSelector } from '../hooks/redux';
 import { selectColorOfTheDay } from '../store/DiscoverSlice';
 import { selectCurrentTypeName, selectTypeColor } from '../store/TypesSlice';
+import {
+  selectCurrentPokemonId,
+  selectCurrentPokemonName,
+  selectPokemonColor,
+} from '../store/PokemonSlice';
 
 const Stack = createStackNavigator<RootStackParamList>();
 const BottomTab = createBottomTabNavigator<RootBottomTabsParamList>();
@@ -26,7 +31,10 @@ const BottomTab = createBottomTabNavigator<RootBottomTabsParamList>();
 const Navigator = () => {
   const colorOfTheDay = useAppSelector(selectColorOfTheDay);
   const currentTypeName = useAppSelector(selectCurrentTypeName);
+  const currentPokemonName = useAppSelector(selectCurrentPokemonName);
+  const currentPokemonId = useAppSelector(selectCurrentPokemonId);
   const typeColor = useAppSelector(selectTypeColor);
+  const pokemonColor = useAppSelector(selectPokemonColor);
 
   return (
     <NavigationContainer>
@@ -35,8 +43,8 @@ const Navigator = () => {
         screenOptions={{
           headerTintColor: Colors.white,
           headerStyle: {
-            backgroundColor: PokemonTypeColors.pokemonRed,
-            shadowColor: PokemonTypeColors.pokemonRed,
+            backgroundColor: Colors.pokemonRed,
+            shadowColor: Colors.pokemonRed,
           },
         }}>
         <Stack.Screen
@@ -77,9 +85,12 @@ const Navigator = () => {
           name="TypeDetail"
           component={TypeDetailPage}
           options={{
-            title: `${
-              currentTypeName.charAt(0).toUpperCase() + currentTypeName.slice(1)
-            } Pokémon`,
+            title: currentTypeName
+              ? `${
+                  currentTypeName.charAt(0).toUpperCase() +
+                  currentTypeName.slice(1)
+                } Pokémon`
+              : 'Pokémon Type',
             headerStyle: {
               backgroundColor: typeColor,
               shadowColor: typeColor,
@@ -89,7 +100,13 @@ const Navigator = () => {
         <Stack.Screen
           name="Pokemon"
           component={PokemonNavigator}
-          options={{ title: 'Pokémon' }}
+          options={{
+            title: `${currentPokemonName} #${currentPokemonId
+              .toString()
+              .padStart(3, '0')}`,
+            headerTitleStyle: { textTransform: 'capitalize' },
+            headerStyle: { backgroundColor: pokemonColor },
+          }}
         />
       </Stack.Navigator>
     </NavigationContainer>
@@ -97,14 +114,15 @@ const Navigator = () => {
 };
 
 const PokemonNavigator = () => {
+  const pokemonColor = useAppSelector(selectPokemonColor);
+
   return (
     <BottomTab.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: PokemonTypeColors.pokemonRed,
+        tabBarActiveTintColor: pokemonColor,
         tabBarStyle: {
-          borderTopLeftRadius: 90,
-          borderTopRightRadius: 90,
+          backgroundColor: Colors.darkGray,
         },
       }}>
       <BottomTab.Group>
@@ -112,7 +130,7 @@ const PokemonNavigator = () => {
           name="PokemonDetail"
           component={PokemonDetailPage}
           options={{
-            title: 'Pokémon',
+            title: 'Info',
             tabBarIcon: ({ color, size }) => (
               <Icon name="pokeball" color={color} size={size} />
             ),

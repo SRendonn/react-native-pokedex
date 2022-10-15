@@ -9,10 +9,11 @@ import {
 } from '../../store/DiscoverSlice';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Colors } from '../../theme/colors';
-import MainButton from '../../components/MainButton';
 import { useNavigation } from '@react-navigation/native';
 import type { RootStackParamList } from '../../types/navigation';
 import type { StackNavigationProp } from '@react-navigation/stack';
+import IconButton from '../../components/IconButton';
+import { setCurrentPokemonName } from '../../store/PokemonSlice';
 
 const discoverService = new DiscoverService();
 
@@ -23,21 +24,6 @@ const DiscoverPage = () => {
   const { pokemonOfTheDay, isLoadingPokemonOfTheDay } = useAppSelector(
     selectPokemonOfTheDay,
   );
-
-  const navigationButtons = [
-    {
-      label: 'Types',
-      iconName: 'pokeball',
-      variant: 'grass',
-      onPress: () => navigation.navigate('Types'),
-    },
-    {
-      label: 'Locations',
-      iconName: 'pokemon-go',
-      variant: 'fire',
-      onPress: () => navigation.navigate('Locations'),
-    },
-  ];
 
   useEffect(() => {
     dispatch(discoverService.fetchPokemonOfTheDay());
@@ -57,24 +43,24 @@ const DiscoverPage = () => {
         {isLoadingPokemonOfTheDay ? (
           <Text>Loading</Text>
         ) : pokemonOfTheDay ? (
-          <PokemonOfTheDay pokemon={pokemonOfTheDay} />
+          <PokemonOfTheDay
+            pokemon={pokemonOfTheDay}
+            onPokemonPress={() => {
+              dispatch(setCurrentPokemonName(pokemonOfTheDay.name));
+              navigation.navigate('Pokemon');
+            }}
+          />
         ) : (
           <></>
         )}
       </View>
       <View style={styles.otherButtons}>
-        {navigationButtons.map((button) => (
-          <MainButton
-            key={button.label}
-            label={button.label}
-            buttonRight={
-              <Icon name={button.iconName} color={Colors.white} size={32} />
-            }
-            style={styles.navigationButton}
-            variant={button.variant}
-            onPress={button.onPress}
-          />
-        ))}
+        <IconButton
+          icon={<Icon name="pokeball" color={Colors.white} size={192} />}
+          accessibilityLabel="Browse Pokédex"
+          onPress={() => navigation.navigate('Types')}
+        />
+        <Text style={styles.pokedexText}>Browse Pokédex</Text>
       </View>
     </View>
   );
@@ -100,20 +86,23 @@ const styles = StyleSheet.create({
   },
   bgPokeball: {
     position: 'absolute',
-    top: 26,
+    top: -10,
     opacity: 0.5,
   },
   otherButtons: {
     position: 'relative',
     zIndex: 20,
-    padding: 20,
     flexGrow: 1,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  navigationButton: {
-    marginBottom: 12,
+  pokedexText: {
+    marginTop: 16,
+    textTransform: 'uppercase',
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: Colors.white,
   },
 });
 

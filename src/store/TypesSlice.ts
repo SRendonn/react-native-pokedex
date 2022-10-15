@@ -3,8 +3,7 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import type { ResourceMap, ResourceSummary } from '../types/pokemon';
 import type { PokemonType } from '../types/pokemonTypes';
 import { RootState } from '.';
-import { PokemonTypeColors } from '../theme/colors';
-import { off } from 'process';
+import { Colors, PokemonTypeColors } from '../theme/colors';
 
 type TypeState = {
   typesDetailMap: ResourceMap<PokemonType>;
@@ -61,7 +60,8 @@ const typesSlice = createSlice({
       const offset = action.payload.offset ?? state.paginationOptions.offset;
 
       const maxPages = Math.floor(
-        state.typesDetailMap[state.currentTypeName]?.pokemon.length / limit,
+        (state.typesDetailMap[state.currentTypeName]?.pokemon.length || 0) /
+          limit,
       );
 
       if (offset <= maxPages && offset >= 0) {
@@ -88,15 +88,15 @@ export const selectCurrentTypeName = (state: RootState) =>
 export const selectCurrentType = (state: RootState) => {
   const { typesDetailMap, currentTypeName, currentTypeSearch } = state.types;
 
-  if (!typesDetailMap[currentTypeName]) return;
+  if (!typesDetailMap[currentTypeName]) return undefined;
 
   return {
     ...typesDetailMap[currentTypeName],
-    pokemon: typesDetailMap[currentTypeName].pokemon.filter(
+    pokemon: typesDetailMap[currentTypeName]?.pokemon.filter(
       (pok) =>
         !currentTypeSearch || pok.pokemon.name.startsWith(currentTypeSearch),
     ),
-  };
+  } as PokemonType;
 };
 export const selectIsLoadingCurrentType = (state: RootState) =>
   state.types.isLoadingCurrentType;
@@ -111,8 +111,7 @@ export const selectSearch = (state: RootState) => state.types.search;
 export const selectIsLoadingTypes = (state: RootState) =>
   state.types.isLoadingTypes;
 export const selectTypeColor = (state: RootState) =>
-  PokemonTypeColors[state.types.currentTypeName] ||
-  PokemonTypeColors.pokemonRed;
+  PokemonTypeColors[state.types.currentTypeName] || Colors.pokemonRed;
 export const selectPaginationOptions = (state: RootState) =>
   state.types.paginationOptions;
 
