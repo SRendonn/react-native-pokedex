@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import type { ResourceSummary } from '../../types/pokemon';
-import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import FastImage from 'react-native-fast-image';
 import { Colors } from '../../theme/colors';
-import { usePokemonIdFromUrl, usePokemonImage } from '../../hooks/pokemon';
+import { usePokemonIdFromUrl, usePokemonImageSet } from '../../hooks/pokemon';
 import { PokemonTypeColors } from '../../theme/colors';
 
 type PokemonBasicCardProps = {
@@ -17,7 +18,7 @@ const PokemonBasicCard = ({
   onPress = () => {},
 }: PokemonBasicCardProps) => {
   const pokemonId = usePokemonIdFromUrl(pokemonBasic.url);
-  const [imgSrcOfficial, imgSrcDefault] = usePokemonImage(pokemonId);
+  const [imgSrcOfficial, imgSrcDefault] = usePokemonImageSet(pokemonId);
   const [selectedPokemonImg, setSelectedPokemonImg] = useState(imgSrcOfficial);
 
   return (
@@ -37,8 +38,11 @@ const PokemonBasicCard = ({
             </Text>
           </View>
         </View>
-        <Image
-          source={{ uri: selectedPokemonImg, width: 96, height: 96 }}
+        <FastImage
+          source={{
+            uri: selectedPokemonImg,
+            priority: FastImage.priority.normal,
+          }}
           style={styles.cardImage}
           onError={() => {
             setSelectedPokemonImg(imgSrcDefault);
@@ -94,6 +98,8 @@ const styles = StyleSheet.create({
   },
   cardImage: {
     alignSelf: 'center',
+    width: 96,
+    height: 96,
   },
   cardFooter: {
     display: 'flex',

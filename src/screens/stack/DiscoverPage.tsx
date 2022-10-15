@@ -1,5 +1,11 @@
 import React, { useEffect } from 'react';
-import { View, StyleSheet, Text, StatusBar } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Text,
+  StatusBar,
+  ActivityIndicator,
+} from 'react-native';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import PokemonOfTheDay from '../../components/pokemon/PokemonOfTheDay';
 import DiscoverService from '../../services/DiscoverService';
@@ -41,7 +47,9 @@ const DiscoverPage = () => {
           style={styles.bgPokeball}
         />
         {isLoadingPokemonOfTheDay ? (
-          <Text>Loading</Text>
+          <View style={styles.loadingWrapper}>
+            <ActivityIndicator size="large" color={Colors.white} />
+          </View>
         ) : pokemonOfTheDay ? (
           <PokemonOfTheDay
             pokemon={pokemonOfTheDay}
@@ -103,6 +111,14 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     color: Colors.white,
+  },
+  loadingWrapper: {
+    position: 'absolute',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    top: 24,
+    height: 192,
   },
 });
 

@@ -1,32 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View, Text, StatusBar } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import PokemonService from '../../services/PokemonService';
+import { useAppSelector } from '../../hooks/redux';
 import {
   selectCurrentChain,
-  selectCurrentPokemonName,
   selectIsLoadingCurrentChain,
   selectPokemonColor,
 } from '../../store/PokemonSlice';
 import { Colors } from '../../theme/colors';
-import { usePokemonImage } from '../../hooks/pokemon';
 import PokemonBasicInfo from '../../components/pokemon/PokemonBasicInfo';
-
-const pokemonService = new PokemonService();
+import { getPokemonImageSet } from '../../util/pokemon';
 
 const EvolutionDetailPage = () => {
-  const dispatch = useAppDispatch();
-  const currentPokemonName = useAppSelector(selectCurrentPokemonName);
   const pokemonColor = useAppSelector(selectPokemonColor);
   const currentChain = useAppSelector(selectCurrentChain);
   const isLoadingCurrentChain = useAppSelector(selectIsLoadingCurrentChain);
 
   const currentChainImages = currentChain.map((chain) => {
     const urlSplit = chain.url.split('/');
-    const pokemonSpeciesId = Number.parseInt(urlSplit[urlSplit.length - 2]);
+    const pokemonSpeciesId = Number.parseInt(urlSplit[urlSplit.length - 2], 10);
 
-    return usePokemonImage(pokemonSpeciesId);
+    return getPokemonImageSet(pokemonSpeciesId);
   });
 
   const [currentChainImagesIndex, setCurrentChainImagesIndex] = useState(
@@ -48,7 +42,7 @@ const EvolutionDetailPage = () => {
       ) : currentChain.length ? (
         <ScrollView
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ justifyContent: 'center', flexGrow: 1 }}
+          contentContainerStyle={styles.scrollContainerStyle}
           style={styles.pokemonMain}>
           {currentChain.map((chain, i) => (
             <PokemonBasicInfo
@@ -131,6 +125,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 4,
     color: Colors.white,
     fontWeight: '600',
+  },
+  scrollContainerStyle: {
+    justifyContent: 'center',
+    flexGrow: 1,
   },
 });
 

@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import FastImage from 'react-native-fast-image';
 import { Colors } from '../../theme/colors';
 
 type PokemonBasicProps = {
@@ -21,14 +22,15 @@ const PokemonBasicInfo = ({
     <View style={styles.pokemonMain}>
       <TouchableOpacity
         style={{
-          ...styles.pokemonImage,
+          ...styles.pokemonImageWrapper,
           ...(showBackgroundShadow ? styles.pokemonImageBackground : {}),
         }}
         onPress={() => {
           onPress();
         }}>
-        <Image
-          source={{ uri: pokemonUri, width: 192, height: 192 }}
+        <FastImage
+          style={styles.pokemonImage}
+          source={{ uri: pokemonUri, priority: FastImage.priority.high }}
           onError={() => {
             onImageLoadError();
           }}
@@ -51,12 +53,16 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     fontSize: 26,
   },
-  pokemonImage: {
+  pokemonImageWrapper: {
     display: 'flex',
     alignItems: 'center',
     width: 192,
     height: 192,
     overflow: 'visible',
+  },
+  pokemonImage: {
+    width: 192,
+    height: 192,
   },
   pokemonImageBackground: {
     borderRadius: 9999,

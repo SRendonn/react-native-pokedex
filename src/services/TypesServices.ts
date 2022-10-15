@@ -2,6 +2,7 @@ import { api } from '../config/axios';
 import type { AppDispatch, RootState } from '../store';
 import {
   addTypeToMap,
+  setIsLoadingCurrentType,
   setIsLoadingTypes,
   setTypesList,
 } from '../store/TypesSlice';
@@ -36,11 +37,15 @@ export default class TypesService {
 
         const state = getState();
         if (!(name in state.types.typesDetailMap)) {
+          dispatch(setIsLoadingCurrentType(true));
           const response = await api.get(`type/${name}`);
           const type: PokemonType = response.data;
           dispatch(addTypeToMap(type));
         }
-      } catch (error) {}
+      } catch (error) {
+      } finally {
+        dispatch(setIsLoadingCurrentType(false));
+      }
     };
   }
 }

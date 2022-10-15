@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { StyleSheet, StatusBar, View, Text } from 'react-native';
+import { StyleSheet, StatusBar, View, ActivityIndicator } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 import SearchBar from '../../components/SearchBar';
@@ -13,7 +13,7 @@ import {
   setPaginationOptions,
   setSearch,
 } from '../../store/TypesSlice';
-import { PokemonTypeColors, Colors } from '../../theme/colors';
+import { Colors } from '../../theme/colors';
 import PokemonTypeCard from '../../components/pokemon/PokemonTypeCard';
 import { RootStackParamList } from '../../types/navigation';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -42,8 +42,8 @@ const TypesPage = () => {
         }}
       />
       {isLoadingTypes ? (
-        <View>
-          <Text>Loading</Text>
+        <View style={styles.loadingWrapper}>
+          <ActivityIndicator size="large" color={Colors.white} />
         </View>
       ) : (
         <FlatList
@@ -77,6 +77,12 @@ const styles = StyleSheet.create({
     display: 'flex',
     width: '100%',
     height: '100%',
+  },
+  loadingWrapper: {
+    flexGrow: 1,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

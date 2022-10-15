@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Text, View, StatusBar, StyleSheet } from 'react-native';
+import { ActivityIndicator, View, StatusBar, StyleSheet } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import TypesService from '../../services/TypesServices';
@@ -66,7 +66,9 @@ const TypeDetailPage = () => {
         }}
       />
       {isLoadingCurrentType ? (
-        <Text>Loading</Text>
+        <View style={styles.loadingWrapper}>
+          <ActivityIndicator size="large" color={Colors.white} />
+        </View>
       ) : currentType ? (
         <>
           <FlatList
@@ -126,6 +128,12 @@ const styles = StyleSheet.create({
   },
   pokemonList: {
     paddingBottom: 20,
+  },
+  loadingWrapper: {
+    flexGrow: 1,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

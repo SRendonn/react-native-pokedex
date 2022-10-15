@@ -4,6 +4,7 @@ import {
   addPokemonToMap,
   setCurrentChain,
   setIsLoadingCurrentChain,
+  setIsLoadingCurrentPokemon,
 } from '../store/PokemonSlice';
 import { EvolutionChain } from '../types/evolution';
 import type { Pokemon, ResourceSummary } from '../types/pokemon';
@@ -17,10 +18,14 @@ export default class PokemonService {
 
         const state = getState();
         if (!(name in state.pokemon.pokemonDetailMap)) {
+          dispatch(setIsLoadingCurrentPokemon(true));
           const data: Pokemon = (await api.get(`pokemon/${name}`)).data;
           dispatch(addPokemonToMap(data));
         }
-      } catch (error) {}
+      } catch (error) {
+      } finally {
+        dispatch(setIsLoadingCurrentPokemon(false));
+      }
     };
   }
 
@@ -34,17 +39,13 @@ export default class PokemonService {
         const speciesResponse: PokemonSpecies = (
           await api.get(`pokemon-species/${name}`)
         ).data;
-
-        const evolutionChainUrl = speciesResponse.evolution_chain.url;
-
         const evolutionChainResponse: EvolutionChain = (
           await api({
-            baseURL: evolutionChainUrl,
+            baseURL: speciesResponse.evolution_chain.url,
           })
         ).data;
 
         const chain: ResourceSummary[] = [];
-
         let chainData = evolutionChainResponse.chain;
         do {
           chain.push({

@@ -1,5 +1,12 @@
 import React, { useEffect } from 'react';
-import { StyleSheet, View, Text, StatusBar, Image } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  StatusBar,
+  ActivityIndicator,
+} from 'react-native';
+import FastImage from 'react-native-fast-image';
 import { ScrollView } from 'react-native-gesture-handler';
 import PokemonTypeChip from '../../components/pokemon/PokemonTypeChip';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
@@ -44,11 +51,16 @@ const PokemonDetailPage = () => {
       />
       <View style={styles.bgBottomPart} />
       {isLoadingCurrentPokemon ? (
-        <Text>Loading</Text>
+        <View style={styles.loadingWrapper}>
+          <ActivityIndicator size="large" color={Colors.white} />
+        </View>
       ) : currentPokemon ? (
         <View style={styles.pokemonMain}>
-          <View style={styles.pokemonImage}>
-            <Image source={{ uri: pokemonUri, width: 192, height: 192 }} />
+          <View style={styles.pokemonImageWrapper}>
+            <FastImage
+              style={styles.pokemonImage}
+              source={{ uri: pokemonUri, priority: FastImage.priority.high }}
+            />
           </View>
           <View style={styles.typesChips}>
             {currentPokemon.types.map((type) => (
@@ -109,12 +121,16 @@ const styles = StyleSheet.create({
     zIndex: 10,
     top: 75,
   },
-  pokemonImage: {
+  pokemonImageWrapper: {
     display: 'flex',
     alignItems: 'center',
     width: '100%',
     height: 192,
     overflow: 'visible',
+  },
+  pokemonImage: {
+    width: 192,
+    height: 192,
   },
   typesChips: {
     marginTop: 16,
@@ -140,6 +156,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 4,
     color: Colors.white,
     fontWeight: '600',
+  },
+  loadingWrapper: {
+    flexGrow: 1,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
