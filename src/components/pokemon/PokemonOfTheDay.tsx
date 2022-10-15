@@ -21,6 +21,7 @@ const PokemonOfTheDay = ({
       <PokemonBasicInfo
         pokemonName={pokemon.name}
         pokemonUri={pokemonUri}
+        pokemonId={pokemon.id}
         onPress={onPokemonPress}
       />
       <View style={styles.typesChips}>

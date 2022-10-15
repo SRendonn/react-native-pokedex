@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { StyleSheet, View, Text, StatusBar } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useAppSelector } from '../../hooks/redux';
+import { useNavigation } from '@react-navigation/native';
+import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import {
   selectCurrentChain,
   selectIsLoadingCurrentChain,
@@ -10,8 +12,11 @@ import {
 import { Colors } from '../../theme/colors';
 import PokemonBasicInfo from '../../components/pokemon/PokemonBasicInfo';
 import { getPokemonImageSet } from '../../util/pokemon';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { RootBottomTabsParamList } from '../../types/navigation';
 
 const EvolutionDetailPage = () => {
+  useNavigation<BottomTabNavigationProp<RootBottomTabsParamList>>();
   const pokemonColor = useAppSelector(selectPokemonColor);
   const currentChain = useAppSelector(selectCurrentChain);
   const isLoadingCurrentChain = useAppSelector(selectIsLoadingCurrentChain);
@@ -45,17 +50,25 @@ const EvolutionDetailPage = () => {
           contentContainerStyle={styles.scrollContainerStyle}
           style={styles.pokemonMain}>
           {currentChain.map((chain, i) => (
-            <PokemonBasicInfo
-              key={chain.name}
-              pokemonName={chain.name}
-              pokemonUri={currentChainImages[i][currentChainImagesIndex[i]]}
-              showBackgroundShadow={false}
-              onImageLoadError={() => {
-                setCurrentChainImagesIndex(
-                  currentChain.map((_item, j) => (j === i ? 1 : 0)),
-                );
-              }}
-            />
+            <View key={chain.name}>
+              <PokemonBasicInfo
+                pokemonName={chain.name}
+                pokemonUri={currentChainImages[i][currentChainImagesIndex[i]]}
+                showBackgroundShadow={false}
+                onImageLoadError={() => {
+                  setCurrentChainImagesIndex(
+                    currentChain.map((_item, j) => (j === i ? 1 : 0)),
+                  );
+                }}
+              />
+              {i < currentChain.length - 1 ? (
+                <View style={styles.chainIconWrapper}>
+                  <Icon name="chevron-triple-down" style={styles.chainIcon} />
+                </View>
+              ) : (
+                <></>
+              )}
+            </View>
           ))}
         </ScrollView>
       ) : (
@@ -129,6 +142,16 @@ const styles = StyleSheet.create({
   scrollContainerStyle: {
     justifyContent: 'center',
     flexGrow: 1,
+  },
+  chainIconWrapper: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+  },
+  chainIcon: {
+    fontSize: 24,
+    color: Colors.white,
   },
 });
 

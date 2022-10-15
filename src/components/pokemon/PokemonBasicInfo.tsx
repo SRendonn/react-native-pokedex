@@ -4,6 +4,7 @@ import FastImage from 'react-native-fast-image';
 import { Colors } from '../../theme/colors';
 
 type PokemonBasicProps = {
+  pokemonId?: number;
   pokemonName: string;
   pokemonUri: string;
   showBackgroundShadow?: boolean;
@@ -17,6 +18,7 @@ const PokemonBasicInfo = ({
   showBackgroundShadow = true,
   onPress = () => {},
   onImageLoadError = () => {},
+  pokemonId,
 }: PokemonBasicProps) => {
   return (
     <View style={styles.pokemonMain}>
@@ -36,7 +38,9 @@ const PokemonBasicInfo = ({
           }}
         />
       </TouchableOpacity>
-      <Text style={styles.pokemonName}>{pokemonName}</Text>
+      <Text style={styles.pokemonName}>{`${pokemonName}${
+        pokemonId ? ` #${pokemonId.toString().padStart(3, '0')}` : ''
+      }`}</Text>
     </View>
   );
 };

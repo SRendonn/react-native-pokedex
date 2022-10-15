@@ -114,13 +114,11 @@ const Navigator = () => {
 };
 
 const PokemonNavigator = () => {
-  const pokemonColor = useAppSelector(selectPokemonColor);
-
   return (
     <BottomTab.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: pokemonColor,
+        tabBarActiveTintColor: Colors.pokemonRed,
         tabBarStyle: {
           backgroundColor: Colors.darkGray,
         },
