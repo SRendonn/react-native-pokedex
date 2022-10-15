@@ -33,13 +33,6 @@ const EvolutionDetailPage = () => {
     new Array(currentChainImages.length).fill(0),
   );
 
-  useEffect(() => {
-    dispatch(
-      pokemonService.fetchEvolutionChainFromPokemonName(currentPokemonName),
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   return (
     <View style={styles.main}>
       <StatusBar backgroundColor={pokemonColor} />
@@ -55,6 +48,7 @@ const EvolutionDetailPage = () => {
       ) : currentChain.length ? (
         <ScrollView
           showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ justifyContent: 'center', flexGrow: 1 }}
           style={styles.pokemonMain}>
           {currentChain.map((chain, i) => (
             <PokemonBasicInfo
@@ -102,6 +96,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.darkGray,
   },
   pokemonMain: {
+    display: 'flex',
     position: 'relative',
     zIndex: 10,
   },

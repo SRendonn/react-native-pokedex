@@ -26,6 +26,9 @@ const PokemonDetailPage = () => {
   const pokemonUri = usePokemonImageFromObject(currentPokemon);
 
   useEffect(() => {
+    dispatch(
+      pokemonService.fetchEvolutionChainFromPokemonName(currentPokemonName),
+    );
     dispatch(pokemonService.fetchPokemonDetail(currentPokemonName));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPokemonName]);
