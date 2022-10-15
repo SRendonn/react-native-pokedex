@@ -16,7 +16,7 @@ const PokemonBasicInfo = ({
   pokemonName,
   pokemonUri,
   showBackgroundShadow = true,
-  onPress = () => {},
+  onPress,
   onImageLoadError = () => {},
   pokemonId,
 }: PokemonBasicProps) => {
@@ -27,8 +27,9 @@ const PokemonBasicInfo = ({
           ...styles.pokemonImageWrapper,
           ...(showBackgroundShadow ? styles.pokemonImageBackground : {}),
         }}
+        {...(!onPress ? { disabled: true } : {})}
         onPress={() => {
-          onPress();
+          if (onPress) onPress();
         }}>
         <FastImage
           style={styles.pokemonImage}
