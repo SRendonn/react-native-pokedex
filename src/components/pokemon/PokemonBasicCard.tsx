@@ -17,8 +17,11 @@ const PokemonBasicCard = ({
   typeColor = PokemonTypeColors.pokemonRed,
   onPress = () => {},
 }: PokemonBasicCardProps) => {
-  const pokemonId = usePokemonIdFromUrl(pokemonBasic.url);
-  const [imgSrcOfficial, imgSrcDefault] = usePokemonImageSet(pokemonId);
+  const pokemonId = usePokemonIdFromUrl(pokemonBasic.url) || 0;
+  const [imgSrcOfficial, imgSrcDefault] = usePokemonImageSet(pokemonId) || [
+    '',
+    '',
+  ];
   const [selectedPokemonImg, setSelectedPokemonImg] = useState(imgSrcOfficial);
 
   return (

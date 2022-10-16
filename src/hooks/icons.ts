@@ -1,6 +1,6 @@
 import { PokemonTypes } from '../types/pokemonTypes';
 
-const iconMap: PokemonTypes = {
+export const iconMap: PokemonTypes = {
   grass: 'leaf',
   water: 'water',
   fire: 'fire',

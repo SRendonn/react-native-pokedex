@@ -30,7 +30,7 @@ const PokemonTypeChip = ({
       testID="pokemon-type-chip"
       style={{
         ...styles.chip,
-        backgroundColor: PokemonTypeColors[type] || PokemonTypeColors.normal,
+        backgroundColor: PokemonTypeColors[type] || Colors.pokemonRed,
       }}
       accessibilityLabel={type}
       onPress={() => {
@@ -38,8 +38,18 @@ const PokemonTypeChip = ({
         dispatch(setCurrentTypeName(type));
         navigation.navigate('TypeDetail');
       }}>
-      <Icon name={iconName} style={styles.icon} />
-      {hideText ? <></> : <Text style={styles.type}>{type}</Text>}
+      <Icon
+        testID="pokemon-type-chip-icon"
+        name={iconName}
+        style={styles.icon}
+      />
+      {hideText ? (
+        <></>
+      ) : (
+        <Text testID="pokemon-type-chip-text" style={styles.type}>
+          {type}
+        </Text>
+      )}
     </TouchableOpacity>
   );
 };

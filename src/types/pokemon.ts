@@ -51,9 +51,9 @@ export type TypeSummary = {
 
 export type SpriteSummary = Sprite & {
   other: {
-    dream_world: Sprite;
-    home: Sprite;
-    'official-artwork': Sprite;
+    dream_world?: Sprite;
+    home?: Sprite;
+    'official-artwork'?: Sprite;
   };
 };
 
