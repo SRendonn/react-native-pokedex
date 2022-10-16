@@ -3,14 +3,6 @@ export type RootStackParamList = {
   Types: undefined;
   TypeDetail: undefined;
   Pokemon: undefined;
-  Locations: undefined;
-  LocationDetail: {
-    location: string;
-  };
-  MovesAndAbilities: undefined;
-  MoveAndAbilityDetail: {
-    move: string;
-  };
 };
 
 export type RootBottomTabsParamList = {

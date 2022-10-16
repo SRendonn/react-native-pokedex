@@ -2,9 +2,6 @@ import React from 'react';
 import { store } from './src/store';
 import { Provider } from 'react-redux';
 import Navigator from './src/navigation/Navigator';
-import { enableScreens } from 'react-native-screens';
-
-enableScreens();
 
 const App = () => {
   return (

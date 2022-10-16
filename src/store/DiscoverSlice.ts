@@ -4,7 +4,7 @@ import type { Pokemon } from '../types/pokemon';
 import { RootState } from '.';
 import { Colors, PokemonTypeColors } from '../theme/colors';
 
-type DiscoverState = {
+export type DiscoverState = {
   isLoadingPokemonOfTheDay: boolean;
   pokemonOfTheDay: Pokemon | undefined;
 };

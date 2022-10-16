@@ -3,7 +3,7 @@ import { StyleSheet, TextInput, View } from 'react-native';
 import { Colors } from '../theme/colors';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-type SearchInputProps = {
+export type SearchBarProps = {
   onChangeText: Function;
   value: string;
   backgroundColor?: string;
@@ -13,9 +13,10 @@ const SearchBar = ({
   value = '',
   onChangeText = () => {},
   backgroundColor,
-}: SearchInputProps) => {
+}: SearchBarProps) => {
   return (
     <View
+      testID="searchbar-container"
       style={{
         ...styles.searchWrapper,
         backgroundColor: backgroundColor || Colors.lightGray,

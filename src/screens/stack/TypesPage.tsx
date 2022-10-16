@@ -16,12 +16,13 @@ import {
 import { Colors } from '../../theme/colors';
 import PokemonTypeCard from '../../components/pokemon/PokemonTypeCard';
 import { RootStackParamList } from '../../types/navigation';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 const typesServices = new TypesService();
 
 const TypesPage = () => {
-  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const dispatch = useAppDispatch();
   const search = useAppSelector(selectSearch);
   const typesList = useAppSelector(selectTypesList);

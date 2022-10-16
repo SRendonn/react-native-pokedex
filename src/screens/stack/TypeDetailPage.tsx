@@ -16,7 +16,7 @@ import {
 import PokemonBasicCard from '../../components/pokemon/PokemonBasicCard';
 import { useNavigation } from '@react-navigation/native';
 import type { RootStackParamList } from '../../types/navigation';
-import type { StackNavigationProp } from '@react-navigation/stack';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import SearchBar from '../../components/SearchBar';
 import Pagination from '../../components/Pagination';
 import { Colors } from '../../theme/colors';
@@ -26,7 +26,8 @@ import { setCurrentPokemonName } from '../../store/PokemonSlice';
 const typesService = new TypesService();
 
 const TypeDetailPage = () => {
-  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   const dispatch = useAppDispatch();
   const isLoadingCurrentType = useAppSelector(selectIsLoadingCurrentType);
@@ -44,7 +45,7 @@ const TypeDetailPage = () => {
     <View style={styles.main}>
       <StatusBar backgroundColor={typeColor} />
       {currentType ? (
-        <View style={{ backgroundColor: typeColor }}>
+        <View style={{ ...styles.damageRelations, backgroundColor: typeColor }}>
           <PokemonDamageRelation
             damageRelation={currentType.damage_relations.double_damage_to}
             label="Strong against"
@@ -134,6 +135,9 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  damageRelations: {
+    paddingTop: 8,
   },
 });
 

@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Colors } from '../theme/colors';
 
-type PaginationProps = {
+export type PaginationProps = {
   totalSize: number;
   pageSize: number;
   currentPage: number;
@@ -22,25 +22,26 @@ const Pagination = ({
   onNextPagePress,
   onPrevPagePress,
 }: PaginationProps) => {
-  const currentFirstItem = currentPage * pageSize + 1;
+  const currentFirstItem = totalSize ? currentPage * pageSize + 1 : 0;
   const currentLastItem = Math.min(
     currentPage * pageSize + pageSize,
     totalSize,
   );
 
-  const isPrevPageDisabled = currentPage === 0;
-  const isNextPageDisabled = currentPage === Math.floor(totalSize / pageSize);
+  const isPrevPageDisabled = currentPage <= 0;
+  const isNextPageDisabled = currentPage >= Math.floor(totalSize / pageSize);
 
   return (
     <View style={styles.paginationWrapper}>
       <View style={styles.paginationButtons}>
         <TouchableOpacity
+          testID="first-page-btn"
           style={styles.button}
           accessibilityLabel="First Page"
+          disabled={isPrevPageDisabled}
           onPress={() => onFirstPagePress()}>
           <Icon
             name="page-first"
-            disabled={isPrevPageDisabled}
             style={{
               ...styles.buttonIcon,
               ...(isPrevPageDisabled ? styles.iconDisabled : {}),
@@ -48,6 +49,7 @@ const Pagination = ({
           />
         </TouchableOpacity>
         <TouchableOpacity
+          testID="prev-page-btn"
           style={styles.button}
           disabled={isPrevPageDisabled}
           accessibilityLabel="Previous Page"
@@ -61,6 +63,7 @@ const Pagination = ({
           />
         </TouchableOpacity>
         <TouchableOpacity
+          testID="next-page-btn"
           style={styles.button}
           disabled={isNextPageDisabled}
           accessibilityLabel="Next Page"
@@ -74,6 +77,7 @@ const Pagination = ({
           />
         </TouchableOpacity>
         <TouchableOpacity
+          testID="last-page-btn"
           style={styles.button}
           disabled={isNextPageDisabled}
           onPress={() => onLastPagePress()}>

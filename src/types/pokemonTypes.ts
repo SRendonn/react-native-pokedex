@@ -1,5 +1,27 @@
 import { ResourceSummary } from './pokemon';
 
+export type PokemonTypeName =
+  | 'grass'
+  | 'water'
+  | 'fire'
+  | 'electric'
+  | 'psychic'
+  | 'poison'
+  | 'bug'
+  | 'flying'
+  | 'fighting'
+  | 'normal'
+  | 'rock'
+  | 'ground'
+  | 'ghost'
+  | 'dark'
+  | 'steel'
+  | 'fairy'
+  | 'dragon'
+  | 'ice'
+  | 'unknown'
+  | 'shadow';
+
 export type PokemonTypes = {
   [key: string]: string;
   grass: string;

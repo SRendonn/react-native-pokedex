@@ -4,7 +4,7 @@ import type { Pokemon, ResourceMap, ResourceSummary } from '../types/pokemon';
 import { RootState } from '.';
 import { Colors, PokemonTypeColors } from '../theme/colors';
 
-type PokemonState = {
+export type PokemonState = {
   isLoadingCurrentPokemon: boolean;
   currentPokemonName: string;
   pokemonDetailMap: ResourceMap<Pokemon>;

@@ -14,7 +14,7 @@ import type {
   RootBottomTabsParamList,
   RootStackParamList,
 } from '../types/navigation';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useAppSelector } from '../hooks/redux';
 import { selectColorOfTheDay } from '../store/DiscoverSlice';
@@ -25,7 +25,7 @@ import {
   selectPokemonColor,
 } from '../store/PokemonSlice';
 
-const Stack = createStackNavigator<RootStackParamList>();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 const BottomTab = createBottomTabNavigator<RootBottomTabsParamList>();
 
 const Navigator = () => {
@@ -44,7 +44,6 @@ const Navigator = () => {
           headerTintColor: Colors.white,
           headerStyle: {
             backgroundColor: Colors.pokemonRed,
-            shadowColor: Colors.pokemonRed,
           },
         }}>
         <Stack.Screen
@@ -55,7 +54,6 @@ const Navigator = () => {
             headerTintColor: Colors.white,
             headerStyle: {
               backgroundColor: colorOfTheDay,
-              shadowColor: colorOfTheDay,
             },
             headerLeft: () => (
               <Icon
@@ -93,7 +91,6 @@ const Navigator = () => {
               : 'Pokémon Type',
             headerStyle: {
               backgroundColor: typeColor,
-              shadowColor: typeColor,
             },
           }}
         />
@@ -101,10 +98,10 @@ const Navigator = () => {
           name="Pokemon"
           component={PokemonNavigator}
           options={{
-            title: `${currentPokemonName} #${currentPokemonId
-              .toString()
-              .padStart(3, '0')}`,
-            headerTitleStyle: { textTransform: 'capitalize' },
+            title: `${
+              currentPokemonName.charAt(0).toUpperCase() +
+              currentPokemonName.slice(1)
+            } #${currentPokemonId.toString().padStart(3, '0')}`,
             headerStyle: { backgroundColor: pokemonColor },
           }}
         />

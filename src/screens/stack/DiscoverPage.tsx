@@ -17,14 +17,15 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Colors } from '../../theme/colors';
 import { useNavigation } from '@react-navigation/native';
 import type { RootStackParamList } from '../../types/navigation';
-import type { StackNavigationProp } from '@react-navigation/stack';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import IconButton from '../../components/IconButton';
 import { setCurrentPokemonName } from '../../store/PokemonSlice';
 
 const discoverService = new DiscoverService();
 
 const DiscoverPage = () => {
-  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const dispatch = useAppDispatch();
   const colorOfTheDay = useAppSelector(selectColorOfTheDay);
   const { pokemonOfTheDay, isLoadingPokemonOfTheDay } = useAppSelector(
@@ -39,11 +40,12 @@ const DiscoverPage = () => {
     <View style={styles.main}>
       <StatusBar backgroundColor={colorOfTheDay} />
       <View
+        accessibilityLabel="Pokémon of the day"
         style={{ ...styles.pokemonOfTheDay, backgroundColor: colorOfTheDay }}>
         <Icon
           name="pokeball"
           size={256}
-          color={Colors.whiteSmoke}
+          color={Colors.white}
           style={styles.bgPokeball}
         />
         {isLoadingPokemonOfTheDay ? (

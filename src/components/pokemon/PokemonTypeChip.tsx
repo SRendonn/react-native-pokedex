@@ -7,9 +7,9 @@ import { useAppDispatch } from '../../hooks/redux';
 import { setCurrentTypeName } from '../../store/TypesSlice';
 import { useNavigation } from '@react-navigation/native';
 import type { RootStackParamList } from '../../types/navigation';
-import type { StackNavigationProp } from '@react-navigation/stack';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-type PokemonTypeChipProps = {
+export type PokemonTypeChipProps = {
   type: string;
   hideText?: boolean;
   onPress?: Function;
@@ -21,11 +21,13 @@ const PokemonTypeChip = ({
   onPress,
 }: PokemonTypeChipProps) => {
   const dispatch = useAppDispatch();
-  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const iconName = useTypeIcon(type);
 
   return (
     <TouchableOpacity
+      testID="pokemon-type-chip"
       style={{
         ...styles.chip,
         backgroundColor: PokemonTypeColors[type] || PokemonTypeColors.normal,
